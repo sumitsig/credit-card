@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IndusInd Bank – Not Everybody Gets It</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── GOLD CONSTANTS (never change) ──────────────────────── */
+    :root {
+      --g1: #BF953F; --g2: #FCF6BA; --g3: #B38728;
+      --g4: #FBF5B7; --g5: #AA771C;
+      --orange: #E8651A;
+      --orange-glow: rgba(232,101,26,0.45);
+    }
+
+    /* ─── DARK THEME ─────────────────────────────────────────── */
+    [data-theme="dark"] {
+      --bg:             #0A0A0A;
+      --bg-card:        rgba(12,8,2,0.85);
+      --bg-card-hover:  rgba(20,13,4,0.97);
+      --bg-stat:        linear-gradient(135deg,rgba(191,149,63,.055) 0%,rgba(232,101,26,.035) 100%);
+      --bg-t-card:      rgba(14,9,2,0.78);
+      --bg-navbar:      rgba(10,10,10,0.62);
+      --bg-navbar-scr:  rgba(10,10,10,0.97);
+      --text:           #E8E0D5;
+      --text-muted:     rgba(232,224,213,0.52);
+      --text-footer:    rgba(232,224,213,0.3);
+      --text-label:     rgba(232,224,213,0.3);
+      --nav-link:       rgba(232,224,213,0.55);
+      --border:         rgba(191,149,63,0.12);
+      --border-card:    rgba(191,149,63,0.08);
+      --border-t:       rgba(191,149,63,0.12);
+      --divider-mid:    rgba(252,246,186,0.50);
+      --hero-bg:        radial-gradient(ellipse 75% 55% at 68% 52%,rgba(232,101,26,.09),transparent 70%),
+                        radial-gradient(ellipse 45% 40% at 18% 78%,rgba(191,149,63,.06),transparent 65%),
+                        #0A0A0A;
+      --grid-line:      rgba(191,149,63,0.04);
+      --particle:       rgba(191,149,63,0.5);
+      --icon-bg:        linear-gradient(135deg,rgba(191,149,63,.14),rgba(191,149,63,.05));
+      --icon-border:    rgba(191,149,63,0.22);
+      --footer-col-h:   rgba(191,149,63,0.50);
+      --btn-sec-border: rgba(191,149,63,0.28);
+      --btn-sec-color:  rgba(232,224,213,0.6);
+      --scrollbar-bg:   #0A0A0A;
+      --feature-num:    rgba(191,149,63,0.18);
+      --stat-label:     rgba(232,224,213,0.30);
+    }
+
+    /* ─── LIGHT THEME ────────────────────────────────────────── */
+    [data-theme="light"] {
+      --bg:             #FBF5E8;
+      --bg-card:        rgba(255,249,236,0.92);
+      --bg-card-hover:  rgba(255,252,244,0.99);
+      --bg-stat:        linear-gradient(135deg,rgba(191,149,63,.08) 0%,rgba(232,101,26,.05) 100%);
+      --bg-t-card:      rgba(255,248,230,0.85);
+      --bg-navbar:      rgba(251,245,232,0.75);
+      --bg-navbar-scr:  rgba(251,245,232,0.98);
+      --text:           #1A0F02;
+      --text-muted:     rgba(26,15,2,0.55);
+      --text-footer:    rgba(26,15,2,0.40);
+      --text-label:     rgba(26,15,2,0.38);
+      --nav-link:       rgba(26,15,2,0.55);
+      --border:         rgba(179,135,40,0.20);
+      --border-card:    rgba(179,135,40,0.14);
+      --border-t:       rgba(179,135,40,0.18);
+      --divider-mid:    rgba(179,135,40,0.60);
+      --hero-bg:        radial-gradient(ellipse 75% 55% at 68% 52%,rgba(232,101,26,.07),transparent 70%),
+                        radial-gradient(ellipse 45% 40% at 18% 78%,rgba(191,149,63,.10),transparent 65%),
+                        #FBF5E8;
+      --grid-line:      rgba(179,135,40,0.07);
+      --particle:       rgba(179,135,40,0.35);
+      --icon-bg:        linear-gradient(135deg,rgba(191,149,63,.18),rgba(191,149,63,.06));
+      --icon-border:    rgba(179,135,40,0.30);
+      --footer-col-h:   rgba(170,119,28,0.65);
+      --btn-sec-border: rgba(179,135,40,0.35);
+      --btn-sec-color:  rgba(26,15,2,0.62);
+      --scrollbar-bg:   #FBF5E8;
+      --feature-num:    rgba(179,135,40,0.22);
+      --stat-label:     rgba(26,15,2,0.35);
+    }
+
+    /* ─── BASE ───────────────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background: var(--bg); color: var(--text);
+      overflow-x: hidden; min-height: 100vh;
+      transition: background .5s ease, color .5s ease;
+    }
+    /* grain overlay */
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000; opacity: .38;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--scrollbar-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--g3); border-radius: 3px; }
+
+    /* ─── KEYFRAMES ──────────────────────────────────────────── */
+    @keyframes goldShimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: .6; }
+      90%  { opacity: .25; }
+      100% { transform: translateY(-5vh) scale(1); opacity: 0; }
+    }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGlow {
+      0%,100% { box-shadow: 0 0 30px 6px rgba(232,101,26,.25); }
+      50%      { box-shadow: 0 0 60px 20px rgba(232,101,26,.50); }
+    }
+    /* toggle track slide */
+    @keyframes trackSlide {
+      from { transform: translateX(0); }
+      to   { transform: translateX(1px); }
+    }
+
+    /* ─── UTILITIES ──────────────────────────────────────────── */
+    .gold-text {
+      background: linear-gradient(90deg, var(--g5) 0%, var(--g3) 15%, var(--g1) 30%, var(--g2) 45%, var(--g4) 55%, var(--g2) 68%, var(--g1) 82%, var(--g5) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: goldShimmer 4s linear infinite;
+    }
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(191,149,63,.22), var(--divider-mid), rgba(191,149,63,.22), transparent);
+      transition: background .5s;
+    }
+    .section-eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .68rem; letter-spacing: .26em; text-transform: uppercase;
+      color: var(--orange); display: block; margin-bottom: .9rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3.4rem); font-weight: 700; line-height: 1.1;
+      color: var(--text); transition: color .5s;
+    }
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+    .fade-up { opacity: 0; }
+    .fade-up.visible { animation: fadeUp .75s ease forwards; }
+
+    /* ─── THEME TOGGLE ───────────────────────────────────────── */
+    .theme-toggle {
+      position: relative;
+      width: 56px; height: 28px;
+      background: var(--btn-sec-border);
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: background .4s, border-color .4s;
+      flex-shrink: 0;
+      display: flex; align-items: center;
+      padding: 3px;
+    }
+    .theme-toggle:hover { border-color: var(--g1); }
+    .toggle-thumb {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--g3), var(--g1), var(--g2));
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .toggle-thumb  { transform: translateX(0); }
+    [data-theme="light"] .toggle-thumb { transform: translateX(28px); }
+    .toggle-icon { font-size: 11px; line-height: 1; user-select: none; }
+    /* sun/moon track labels */
+    .toggle-label-dark, .toggle-label-light {
+      position: absolute;
+      font-size: 10px; line-height: 1;
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+    .toggle-label-dark  { right: 7px; }
+    .toggle-label-light { left: 7px; }
+    [data-theme="dark"]  .toggle-label-dark  { opacity: 0; }
+    [data-theme="dark"]  .toggle-label-light { opacity: 1; }
+    [data-theme="light"] .toggle-label-dark  { opacity: 1; }
+    [data-theme="light"] .toggle-label-light { opacity: 0; }
+
+    /* ─── NAVBAR ─────────────────────────────────────────────── */
+    .navbar {
+      position: fixed; inset: 0 0 auto 0; z-index: 800;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: var(--bg-navbar);
+      backdrop-filter: blur(22px) saturate(1.5);
+      border-bottom: 1px solid var(--border);
+      transition: background .35s, border-color .5s;
+    }
+    .navbar.scrolled { background: var(--bg-navbar-scr); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; letter-spacing: .06em; }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .73rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--nav-link); text-decoration: none; transition: color .3s;
+    }
+    .nav-links a:hover { color: var(--g1); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-cta {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      padding: .65rem 1.7rem; border: none; border-radius: 2px; cursor: pointer;
+      background: linear-gradient(135deg, var(--g3), var(--g1) 50%, var(--g2));
+      background-size: 200% auto; color: #0A0A0A;
+      transition: background-position .5s, box-shadow .3s, transform .2s;
+    }
+    .nav-cta:hover { background-position: right center; box-shadow: 0 0 28px rgba(191,149,63,.5); transform: translateY(-1px); }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 9rem 3rem 5rem; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: var(--hero-bg);
+      transition: background .6s;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 60px 60px;
+      -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+      mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+      transition: background-image .5s;
+    }
+    .particles { position: absolute; inset: 0; pointer-events: none; }
+    .particle { position: absolute; border-radius: 50%; background: var(--particle); animation: floatUp linear infinite; }
+    .hero-inner {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+      max-width: 1300px; margin: 0 auto; width: 100%;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .7rem; font-weight: 600; letter-spacing: .28em; text-transform: uppercase;
+      color: var(--orange); display: flex; align-items: center; gap: .8rem; margin-bottom: 1.4rem;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--orange); }
+    .hero-h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5.5rem); font-weight: 900; line-height: 1.02;
+      letter-spacing: -.02em; margin-bottom: 1.4rem; color: var(--text);
+      transition: color .5s;
+    }
+    .hero-h1 .italic-line { font-style: italic; display: block; }
+    .hero-p {
+      font-size: 1.12rem; font-weight: 300; line-height: 1.82;
+      color: var(--text-muted); max-width: 42ch; margin-bottom: 2.4rem;
+      transition: color .5s;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .btn-primary {
+      font-family: 'Space Grotesk', sans-serif; font-size: .76rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: 1rem 2.6rem; border: none; border-radius: 2px; cursor: pointer;
+      background: linear-gradient(135deg, var(--g5), var(--g1), var(--g2), var(--g1));
+      background-size: 200% auto; color: #0A0A0A;
+      transition: background-position .5s, box-shadow .3s, transform .2s;
+    }
+    .btn-primary:hover { background-position: right center; box-shadow: 0 10px 40px rgba(191,149,63,.42); transform: translateY(-2px); }
+    .btn-secondary {
+      font-family: 'Space Grotesk', sans-serif; font-size: .76rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 1rem 2rem; border: 1px solid var(--btn-sec-border); border-radius: 2px;
+      background: transparent; color: var(--btn-sec-color); cursor: pointer;
+      display: inline-flex; align-items: center; gap: .5rem; transition: all .3s;
+    }
+    .btn-secondary:hover { border-color: var(--g1); color: var(--g1); }
+
+    /* ─── 3D CARD ────────────────────────────────────────────── */
+    .card-scene { perspective: 1000px; display: flex; justify-content: center; align-items: center; padding: 2rem; }
+    .card-wrapper { width: 400px; height: 252px; border-radius: 18px; position: relative; transform-style: preserve-3d; will-change: transform; cursor: pointer; }
+    .card-glow {
+      position: absolute; inset: -28px; border-radius: 32px; pointer-events: none; z-index: -1;
+      background: radial-gradient(ellipse at center, var(--orange-glow) 0%, transparent 68%);
+      opacity: 0; transition: opacity .4s ease;
+    }
+    .card-wrapper:hover .card-glow { opacity: 1; animation: pulseGlow 2.5s ease-in-out infinite; }
+    .credit-card {
+      width: 100%; height: 100%; border-radius: 18px; position: relative; overflow: hidden;
+      background: linear-gradient(145deg, #1e1509 0%, #2d200e 35%, #1a1208 65%, #0f0904 100%);
+      box-shadow: 0 35px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(191,149,63,.22), inset 0 1px 0 rgba(191,149,63,.32);
+    }
+    /* Light mode: card gets a subtle elevation shadow */
+    [data-theme="light"] .credit-card {
+      box-shadow: 0 35px 80px rgba(139,90,20,.35), 0 8px 32px rgba(232,101,26,.15), 0 0 0 1px rgba(191,149,63,.3), inset 0 1px 0 rgba(191,149,63,.4);
+    }
+    .card-texture {
+      position: absolute; inset: 0; border-radius: 18px;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(191,149,63,.025) 2px, rgba(191,149,63,.025) 3px),
+        repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(191,149,63,.025) 2px, rgba(191,149,63,.025) 3px);
+    }
+    .card-sheen { position: absolute; inset: 0; border-radius: 18px; pointer-events: none; background: linear-gradient(125deg, rgba(255,255,255,.08) 0%, transparent 40%, rgba(255,255,255,.04) 65%, transparent 100%); }
+    .card-edge-top { position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(191,149,63,.6) 20%, rgba(252,246,186,.9) 50%, rgba(191,149,63,.6) 80%, transparent); }
+    .card-edge-left { position: absolute; top: 0; left: 0; bottom: 0; width: 1px; background: linear-gradient(180deg, transparent, rgba(191,149,63,.4) 50%, transparent); }
+    .card-content { position: relative; z-index: 2; padding: 1.8rem; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+    .card-top-row { display: flex; justify-content: space-between; align-items: flex-start; }
+    .card-bank-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; letter-spacing: .05em; }
+    .card-edition { font-family: 'Space Grotesk', sans-serif; font-size: .5rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(191,149,63,.4); margin-top: 3px; }
+    .chip { width: 42px; height: 32px; border-radius: 5px; background: linear-gradient(135deg, var(--g5), var(--g1), var(--g2)); position: relative; overflow: hidden; }
+    .chip::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0,0,0,.15) 4px, rgba(0,0,0,.15) 5px), repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,.15) 4px, rgba(0,0,0,.15) 5px); }
+    .chip::after { content: ''; position: absolute; inset: 4px; border: 1px solid rgba(0,0,0,.25); border-radius: 3px; }
+    .card-number {
+      font-family: 'Space Grotesk', sans-serif; font-size: 1.22rem; font-weight: 600; letter-spacing: .22em;
+      background: linear-gradient(90deg, var(--g5) 0%, var(--g3) 15%, var(--g1) 30%, var(--g2) 45%, var(--g4) 55%, var(--g2) 65%, var(--g1) 78%, var(--g5) 100%);
+      background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      animation: goldShimmer 3s linear infinite; filter: drop-shadow(0 0 7px rgba(191,149,63,.55));
+    }
+    .card-bottom-row { display: flex; justify-content: space-between; align-items: flex-end; }
+    .card-label { font-family: 'Space Grotesk', sans-serif; font-size: .5rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(191,149,63,.42); margin-bottom: 3px; }
+    .card-value { font-family: 'Space Grotesk', sans-serif; font-size: .75rem; font-weight: 500; letter-spacing: .08em; color: rgba(252,246,186,.88); }
+    .network { display: flex; align-items: center; }
+    .nc { width: 34px; height: 34px; border-radius: 50%; }
+    .nc1 { background: radial-gradient(circle at 40% 50%, #e8651a, #b33b08); margin-right: -11px; }
+    .nc2 { background: radial-gradient(circle at 60% 50%, #f5a623, #e8651a); opacity: .82; }
+
+    /* ─── STATS ──────────────────────────────────────────────── */
+    .stats-strip {
+      padding: 4rem 3rem;
+      background: var(--bg-stat);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      transition: background .5s, border-color .5s;
+    }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 4vw, 4rem); font-weight: 900; line-height: 1; }
+    .stat-label { font-family: 'Space Grotesk', sans-serif; font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--stat-label); margin-top: .5rem; transition: color .5s; }
+
+    /* ─── FEATURES ───────────────────────────────────────────── */
+    .features { padding: 8rem 3rem; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      max-width: 1200px; margin: 0 auto;
+      border: 1px solid var(--border); border-radius: 3px; overflow: hidden;
+      transition: border-color .5s;
+    }
+    .feature-card {
+      background: var(--bg-card); padding: 2.5rem; position: relative; overflow: hidden;
+      border: 1px solid var(--border-card); transition: background .35s, border-color .5s;
+      cursor: default;
+    }
+    .feature-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(232,101,26,.07) 0%, transparent 60%);
+      opacity: 0; transition: opacity .35s;
+    }
+    .feature-card:hover { background: var(--bg-card-hover); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-num { position: absolute; top: 1.4rem; right: 1.4rem; font-family: 'Space Grotesk', sans-serif; font-size: .6rem; letter-spacing: .1em; font-weight: 600; color: var(--feature-num); }
+    .feature-icon {
+      width: 46px; height: 46px; border-radius: 8px;
+      background: var(--icon-bg); border: 1px solid var(--icon-border);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 1.4rem; transition: all .35s;
+    }
+    .feature-icon svg { width: 20px; height: 20px; stroke: var(--g1); fill: none; transition: stroke .35s; }
+    .feature-card:hover .feature-icon { background: linear-gradient(135deg, rgba(232,101,26,.2), rgba(191,149,63,.08)); border-color: var(--orange); box-shadow: 0 0 18px rgba(232,101,26,.22); }
+    .feature-card:hover .feature-icon svg { stroke: var(--orange); }
+    .feature-title { font-family: 'Playfair Display', serif; font-size: 1.22rem; font-weight: 700; margin-bottom: .65rem; color: var(--text); transition: color .5s; }
+    .feature-desc { font-size: .93rem; line-height: 1.8; font-weight: 300; color: var(--text-muted); transition: color .5s; }
+
+    /* ─── TESTIMONIALS ───────────────────────────────────────── */
+    .testimonials { padding: 6rem 0; overflow: hidden; position: relative; }
+    .testimonials::before, .testimonials::after { content: ''; position: absolute; top: 0; bottom: 0; width: 14vw; z-index: 4; pointer-events: none; transition: background .5s; }
+    .testimonials::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+    .testimonials::after  { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+    .testimonials .section-header { padding: 0 3rem; }
+    .marquee-outer { overflow: hidden; }
+    .marquee-track { display: flex; gap: 1.4rem; width: max-content; animation: marquee 38s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+    .t-card {
+      min-width: 310px; max-width: 310px;
+      background: var(--bg-t-card); border: 1px solid var(--border-t);
+      border-radius: 3px; padding: 1.8rem; transition: border-color .3s, background .5s;
+    }
+    .t-card:hover { border-color: rgba(191,149,63,.4); }
+    .t-stars { color: var(--g1); font-size: .8rem; letter-spacing: .1em; margin-bottom: .9rem; }
+    .t-text { font-size: .92rem; line-height: 1.82; font-style: italic; font-weight: 300; color: var(--text-muted); margin-bottom: 1.3rem; transition: color .5s; }
+    .t-author { display: flex; align-items: center; gap: .7rem; }
+    .t-avatar { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, rgba(191,149,63,.22), rgba(232,101,26,.1)); border: 1px solid rgba(191,149,63,.28); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: .65rem; font-weight: 700; color: var(--g1); }
+    .t-name { font-family: 'Space Grotesk', sans-serif; font-size: .78rem; font-weight: 600; color: var(--text); transition: color .5s; }
+    .t-role { font-family: 'Space Grotesk', sans-serif; font-size: .65rem; color: var(--text-label); letter-spacing: .04em; transition: color .5s; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    .footer { padding: 4.5rem 3rem 2rem; border-top: 1px solid var(--border); transition: border-color .5s; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+    .footer-tagline-p { font-size: .9rem; line-height: 1.82; font-weight: 300; color: var(--text-footer); margin-top: 1rem; max-width: 28ch; transition: color .5s; }
+    .footer-col h4 { font-family: 'Space Grotesk', sans-serif; font-size: .65rem; letter-spacing: .22em; text-transform: uppercase; color: var(--footer-col-h); margin-bottom: 1.1rem; transition: color .5s; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+    .footer-col ul a { font-size: .86rem; font-weight: 300; color: var(--text-footer); text-decoration: none; transition: color .3s; }
+    .footer-col ul a:hover { color: var(--g1); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border-card); }
+    .footer-copy { font-family: 'Space Grotesk', sans-serif; font-size: .66rem; letter-spacing: .05em; color: var(--text-footer); transition: color .5s; }
+    .footer-slogan { font-family: 'Playfair Display', serif; font-style: italic; font-size: .88rem; color: var(--g3); opacity: .5; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-eyebrow { justify-content: center; }
+      .hero-p { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .card-wrapper { width: 320px; height: 202px; }
+      .card-number { font-size: 1rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .navbar { padding: 1rem 1.5rem; }
+      .hero { padding: 8rem 1.5rem 4rem; }
+      .features, .stats-strip, .footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo gold-text">IndusInd</div>
+  <ul class="nav-links">
+    <li><a href="#features">Benefits</a></li>
+    <li><a href="#testimonials">Stories</a></li>
+    <li><a href="#stats">Legacy</a></li>
+    <li><a href="#">Eligibility</a></li>
+  </ul>
+  <div class="nav-right">
+    <!-- THEME TOGGLE -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <span class="toggle-label-light">☀️</span>
+      <div class="toggle-thumb">
+        <span class="toggle-icon" id="toggleIcon">🌙</span>
+      </div>
+      <span class="toggle-label-dark">🌙</span>
+    </button>
+    <button class="nav-cta">Request Invite</button>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="particles" id="particles"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Pinnacle Edition</div>
+      <h1 class="hero-h1">
+        Not Everybody<br>
+        <span class="italic-line gold-text">Gets It.</span>
+      </h1>
+      <p class="hero-p">A credit card designed for those who have already arrived. Where every transaction is a statement, and every privilege is earned — never given.</p>
+      <div class="hero-actions">
+        <button class="btn-primary">Request Invitation</button>
+        <button class="btn-secondary">Explore Benefits
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </div>
+    <!-- 3D CARD -->
+    <div class="card-scene">
+      <div class="card-wrapper" id="cardWrapper">
+        <div class="card-glow"></div>
+        <div class="credit-card">
+          <div class="card-texture"></div>
+          <div class="card-sheen"></div>
+          <div class="card-edge-top"></div>
+          <div class="card-edge-left"></div>
+          <div class="card-content">
+            <div class="card-top-row">
+              <div>
+                <div class="card-bank-name gold-text">IndusInd</div>
+                <div class="card-edition">Pinnacle Edition</div>
+              </div>
+              <div class="chip"></div>
+            </div>
+            <div class="card-number">4385&nbsp;&nbsp;1742&nbsp;&nbsp;9261&nbsp;&nbsp;8047</div>
+            <div class="card-bottom-row">
+              <div><div class="card-label">Card Holder</div><div class="card-value">ARJUN MEHTA</div></div>
+              <div><div class="card-label">Expires</div><div class="card-value">09 / 29</div></div>
+              <div class="network"><div class="nc nc1"></div><div class="nc nc2"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ STATS ══════════ -->
+<section class="stats-strip" id="stats">
+  <div class="stats-grid">
+    <div class="fade-up"><div class="stat-num gold-text">2M+</div><div class="stat-label">Elite Members</div></div>
+    <div class="fade-up" style="animation-delay:.1s"><div class="stat-num gold-text">186</div><div class="stat-label">Countries</div></div>
+    <div class="fade-up" style="animation-delay:.2s"><div class="stat-num gold-text">500+</div><div class="stat-label">Airport Lounges</div></div>
+    <div class="fade-up" style="animation-delay:.3s"><div class="stat-num gold-text">98.6%</div><div class="stat-label">Satisfaction Rate</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ FEATURES ══════════ -->
+<section class="features" id="features">
+  <div class="section-header fade-up">
+    <span class="section-eyebrow">Why Pinnacle</span>
+    <h2 class="section-title">Privileges Without <em class="gold-text">Precedent</em></h2>
+  </div>
+  <div class="features-grid" id="featuresGrid"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ TESTIMONIALS ══════════ -->
+<section class="testimonials" id="testimonials">
+  <div class="section-header fade-up">
+    <span class="section-eyebrow">Member Voices</span>
+    <h2 class="section-title">Spoken by the <em class="gold-text">Discerning</em></h2>
+  </div>
+  <div class="marquee-outer">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="nav-logo gold-text" style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;display:inline-block">IndusInd</div>
+      <p class="footer-tagline-p">Banking redefined for those who refuse to compromise. Since 1994.</p>
+    </div>
+    <div class="footer-col"><h4>Products</h4><ul><li><a href="#">Pinnacle Card</a></li><li><a href="#">Private Banking</a></li><li><a href="#">Wealth Management</a></li><li><a href="#">NRI Banking</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Investors</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="#">Concierge</a></li><li><a href="#">Lost Card</a></li><li><a href="#">FAQs</a></li><li><a href="#">Grievance Portal</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 IndusInd Bank Ltd. All rights reserved. IRDAI Reg. RBI Licensed.</div>
+    <div class="footer-slogan">Not Everybody Gets It.</div>
+  </div>
+</footer>
+
+<script>
+/* ══════════ DATA ══════════════════════════════════════════════ */
+const FEATURES = [
+  { icon:'crown',  num:'01', title:'Unlimited Concierge',   desc:'Round-the-clock personal concierge for reservations, travel, events, and everything in between.' },
+  { icon:'globe',  num:'02', title:'Global Acceptance',     desc:'Zero forex markup at 50M+ locations worldwide. Travel without borders, spend without penalty.' },
+  { icon:'shield', num:'03', title:'Quantum Encryption',    desc:'Military-grade card protection with biometric verification and real-time fraud intelligence.' },
+  { icon:'gift',   num:'04', title:'Indulgence Rewards',    desc:'Earn accelerated points on every spend. Redeem for flights, stays, and curated luxury experiences.' },
+  { icon:'zap',    num:'05', title:'Instant Gratification', desc:'10-second approvals, virtual card issuance, and tap-to-pay. Banking at the speed of thought.' },
+  { icon:'phone',  num:'06', title:'Priority Banking',      desc:'Dedicated relationship managers and premium lounge access across 500 airports worldwide.' },
+];
+const TESTIMONIALS = [
+  { q:'The concierge got me a table at Noma on 6 hours notice. I had stopped believing that was possible.',    name:'Arjun Mehta',     role:'MD, Sequoia Capital',        i:'AM' },
+  { q:"This card speaks before I do. At every check-in I can see the difference in how I'm received.",        name:'Priya Krishnan',  role:'Founder, Cleartrip',         i:'PK' },
+  { q:"I've had many premium cards. IndusInd is the only one that has never let me down, in any country.",    name:'Rahul Sabharwal', role:'CTO, Zomato',                i:'RS' },
+  { q:"The rewards program is the most rewarding I've seen. I fly business class for the price of economy.",  name:'Ananya Iyer',     role:'Partner, McKinsey & Co.',    i:'AI' },
+  { q:'Lost my card in Tokyo at midnight. A replacement was at my hotel by 8 AM. No questions asked.',        name:'Vikram Nair',     role:'CEO, BlueStone Jewellery',   i:'VN' },
+  { q:'Not every card earns you a suite upgrade. This one does, consistently and without asking.',             name:'Kavya Reddy',     role:'Director, Tata Consultancy', i:'KR' },
+];
+const ICONS = {
+  crown:  `<svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M4 20l2-8 4 4 2-8 2 8 4-4 2 8"/></svg>`,
+  globe:  `<svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  shield: `<svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+  gift:   `<svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
+  zap:    `<svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  phone:  `<svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 10.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3 .82h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+};
+
+/* ══════════ BUILD FEATURES ════════════════════════════════════ */
+const grid = document.getElementById('featuresGrid');
+FEATURES.forEach((f, i) => {
+  const el = document.createElement('div');
+  el.className = 'feature-card fade-up';
+  el.style.animationDelay = (i * 80) + 'ms';
+  el.innerHTML = `<span class="feature-num">${f.num}</span><div class="feature-icon">${ICONS[f.icon]}</div><h3 class="feature-title">${f.title}</h3><p class="feature-desc">${f.desc}</p>`;
+  grid.appendChild(el);
+});
+
+/* ══════════ BUILD MARQUEE ═════════════════════════════════════ */
+const track = document.getElementById('marqueeTrack');
+[...TESTIMONIALS, ...TESTIMONIALS].forEach(t => {
+  const el = document.createElement('div');
+  el.className = 't-card';
+  el.innerHTML = `<div class="t-stars">★★★★★</div><p class="t-text">"${t.q}"</p><div class="t-author"><div class="t-avatar">${t.i}</div><div><div class="t-name">${t.name}</div><div class="t-role">${t.role}</div></div></div>`;
+  track.appendChild(el);
+});
+
+/* ══════════ PARTICLES ═════════════════════════════════════════ */
+const pEl = document.getElementById('particles');
+for (let i = 0; i < 14; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const sz = Math.random() * 3 + 1;
+  p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;animation-duration:${10+Math.random()*15}s;animation-delay:${Math.random()*12}s;`;
+  pEl.appendChild(p);
+}
+
+/* ══════════ NAVBAR SCROLL ═════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+/* ══════════ THEME TOGGLE ══════════════════════════════════════ */
+(function() {
+  const html   = document.documentElement;
+  const btn    = document.getElementById('themeToggle');
+  const icon   = document.getElementById('toggleIcon');
+
+  // Restore preference
+  const saved = localStorage.getItem('indusind-theme') || 'dark';
+  setTheme(saved);
+
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    localStorage.setItem('indusind-theme', next);
+  });
+
+  function setTheme(t) {
+    html.setAttribute('data-theme', t);
+    icon.textContent = t === 'dark' ? '🌙' : '☀️';
+  }
+})();
+
+/* ══════════ 3D CARD TILT ══════════════════════════════════════ */
+(function() {
+  const wrapper = document.getElementById('cardWrapper');
+  const scene   = wrapper.parentElement;
+  let curX = 0, curY = 0, tgtX = 0, tgtY = 0;
+
+  (function tick() {
+    curX += (tgtX - curX) * 0.07;
+    curY += (tgtY - curY) * 0.07;
+    wrapper.style.transform = `rotateX(${curX}deg) rotateY(${curY}deg)`;
+    requestAnimationFrame(tick);
+  })();
+
+  scene.addEventListener('mousemove', e => {
+    const r = wrapper.getBoundingClientRect();
+    tgtX = -((e.clientY - (r.top  + r.height / 2)) / (r.height / 2)) * 18;
+    tgtY =  ((e.clientX - (r.left + r.width  / 2)) / (r.width  / 2)) * 18;
+  });
+  scene.addEventListener('mouseleave', () => { tgtX = 0; tgtY = 0; });
+})();
+
+/* ══════════ INTERSECTION OBSERVER (fade-up) ═══════════════════ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
